@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
+use App\Models\Kelas;
 
 class MahasiswaController extends Controller
 {
@@ -12,18 +13,22 @@ class MahasiswaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->get('search');
-        if($search){
-            $mahasiswas = Mahasiswa::where("Nim", "LIKE", "%$search%")->paginate(5);
-        }
-        else{
-            $mahasiswas = Mahasiswa::paginate(5);
-        }
-        $posts = Mahasiswa::orderBy('Nim', 'desc')->paginate(5);
-        return view('mahasiswas.index', compact('mahasiswas', 'posts'))
-        ->with('i', (request()->input('page', 1) - 1) * 5);
+        $mahasiswas = Mahasiswa::with('kelas')->get();
+        $paginate = Mahasiswa::orderBy('Nim', 'asc')->paginate(3);
+        return view('mahasiswas.index', ['mahasiswas' => $mahasiswas, 'paginate' => $paginate]);
+        
+        // $search = $request->get('search');
+        // if($search){
+        //     $mahasiswas = Mahasiswa::where("Nim", "LIKE", "%$search%")->paginate(5);
+        // }
+        // else{
+        //     $mahasiswas = Mahasiswa::paginate(5);
+        // }
+        // $posts = Mahasiswa::orderBy('Nim', 'desc')->paginate(5);
+        // return view('mahasiswas.index', compact('mahasiswas', 'posts'))
+        // ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     /**

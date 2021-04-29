@@ -10,15 +10,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Mahasiswa extends Model{
     protected $table="mahasiswa";
-    public $timestamps= false;
+    // public $timestamps= false;
     protected $primaryKey = 'Nim';
+    
     protected $fillable = [ 
         'Nim', 
         'Nama',
-        'Tanggal_lahir', 
-        'Kelas', 
+        // 'Tanggal_lahir', 
+        'kelas_id', 
         'Jurusan', 
-        'No_Handphone',
-        'Email', 
+        // 'No_Handphone',
+        // 'Email', 
     ];
+
+    public function kelas(){
+        return $this->belongsTo(Kelas::class);
+    }
 };
